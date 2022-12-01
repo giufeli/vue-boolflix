@@ -1,43 +1,175 @@
 <template>
   <div class="bigContainer">
     <div class="container">
-      {{ searchStr }}
+      <h1 v-if="(arrMovies.length)">
+        Movies
+      </h1>
+      <div
+        class="boxCard"
+      >
+        <div
+          v-for="obj in arrMovies"
+          :key="obj.id"
+          class="scheda"
+        >
+          <div class="flip">
+            <div class="title">
+              {{ obj.original_title }}
+            </div>
+            <div>
+              Lingua:
+              <lang-flag
+                class="flag"
+                :iso="obj.original_language"
+              />
+            </div>
+
+            <div>{{ `rate ${obj.vote_average} / 10` }}</div>
+            <div>{{ obj.overview }}</div>
+          </div>
+          <div class="front">
+            <img
+              :src="`https://image.tmdb.org/t/p/w500${obj.poster_path}`"
+              alt=""
+            >
+          </div>
+          <div>{{ obj.title }}</div>
+        </div>
+      </div>
+      <h1
+        v-if="(arrTv.length)"
+      >
+        Series Tv
+      </h1>
+      <div
+        class="boxCard"
+      >
+        <div
+          v-for="obj in arrTv"
+          :key="obj.id"
+          class="scheda"
+        >
+          <div class="flip">
+            <div class="title">
+              {{ obj.original_name }}
+              <font-awesome-icon icon="fa-solid fa-star" />
+            </div>
+            <div>
+              Lingua:
+              <lang-flag
+                class="flag"
+                :iso="obj.original_language"
+              />
+            </div>
+            <div>{{ `rate ${obj.vote_average} / 10` }}</div>
+            <div>{{ obj.overview }}</div>
+          </div>
+          <div class="front">
+            <img
+              :src="`https://image.tmdb.org/t/p/w342${obj.poster_path}`"
+              alt=""
+            >
+          </div>
+          <div>{{ obj.name }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import LangFlag from 'vue-lang-code-flags';
 
 export default {
-
+  components: {
+    LangFlag,
+  },
   props: {
-    searchStr: String,
+    arrMovies: Array,
+    arrTv: Array,
   },
 
-  created() {
-    axios.get('https://api.themoviedb.org/3/search/movie', {
-      params: {
-        api_key: '160e30b80c1e6ccd305435a3f159b22a',
-        query: 'searchStr',
-        language: 'it-IT',
-      },
-    })
-      .then((axiosResponse) => {
-        console.log(axiosResponse);
-      });
-  },
 };
 </script>
 
 <style lang="scss" scoped>
   .bigContainer{
-    width: 100%;
-    height: calc(100vh - 10vh);
+    min-height: 100vh;
     background-color: rgb(49, 49, 49);
   }
-
   .container{
-    color: white;
+    color: red;
+    font-size:20px ;
   }
+
+  ul{
+    list-style: none;
+  }
+
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .boxCard{
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    gap:15px;
+    padding-top: 20px;
+    color: white;
+    flex-wrap: wrap;
+  }
+
+  h1{
+    padding-top: 80px;
+  }
+
+  .flag, .title{
+    font-size:20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .scheda{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 90px;
+    height: 350px;
+    width: 250px;
+  }
+
+  .flip{
+    position: absolute;
+    padding:10px;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    color: white;
+    font-size: 13px;
+    font-weight: 300;
+    display: none;
+  }
+
+  .front{
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    text-align: center;
+    opacity: 1;
+
+  }
+  .front:hover{
+    opacity: 0;
+  }
+
+  .scheda:hover .flip {
+    display: block;
+    background-color: rgb(29, 29, 29);
+  }
+
 </style>
