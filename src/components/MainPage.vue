@@ -23,8 +23,15 @@
                 :iso="obj.original_language"
               />
             </div>
-
-            <div>{{ convertScore(obj.vote_avarage) }} </div>
+            <ul>
+              <li>
+                <font-awesome-icon
+                  v-for="item in convertScore(obj.vote_average)"
+                  :key="item"
+                  icon="fa-solid fa-star"
+                />
+              </li>
+            </ul>
             <div>{{ obj.overview }}</div>
           </div>
           <div class="front">
@@ -60,17 +67,22 @@
                 :iso="obj.original_language"
               />
             </div>
-            <!-- <font-awesome-icon icon="fa-regular fa-star" /> -->
+
             <ul>
               <li>
                 <font-awesome-icon
-                  v-for="item in convertScore(obj.vote_avarage)"
+                  v-for="item in convertScore(obj.vote_average)"
                   :key="item"
                   icon="fa-solid fa-star"
                 />
+                <font-awesome-icon
+                  v-for="item in (maxScore - convertScore(obj.vote_average))"
+                  :key="item"
+                  icon="fa-regular fa-star"
+                />
               </li>
             </ul>
-            <!-- <div>{{ convertScore(obj.vote_avarage) }}</div> -->
+
             <div>{{ obj.overview }}</div>
           </div>
           <div class="front">
@@ -97,13 +109,16 @@ export default {
     arrMovies: Array,
     arrTv: Array,
   },
+  data() {
+    return {
+      scoreArr: [],
+    };
+  },
   methods: {
     convertScore(score) {
       const maxScore = 5;
       const originalMaxScore = 10;
-      return {
-        score: Math.round((score * maxScore) / (originalMaxScore)),
-      };
+      return Math.round((score * maxScore) / (originalMaxScore));
     },
   },
 };
