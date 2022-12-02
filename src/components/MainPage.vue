@@ -24,7 +24,7 @@
               />
             </div>
 
-            <div>{{ `rate ${obj.vote_average} / 10` }}</div>
+            <div>{{ convertScore(obj.vote_avarage) }} </div>
             <div>{{ obj.overview }}</div>
           </div>
           <div class="front">
@@ -52,7 +52,6 @@
           <div class="flip">
             <div class="title">
               {{ obj.original_name }}
-              <font-awesome-icon icon="fa-solid fa-star" />
             </div>
             <div>
               Lingua:
@@ -61,7 +60,17 @@
                 :iso="obj.original_language"
               />
             </div>
-            <div>{{ `rate ${obj.vote_average} / 10` }}</div>
+            <!-- <font-awesome-icon icon="fa-regular fa-star" /> -->
+            <ul>
+              <li>
+                <font-awesome-icon
+                  v-for="item in convertScore(obj.vote_avarage)"
+                  :key="item"
+                  icon="fa-solid fa-star"
+                />
+              </li>
+            </ul>
+            <!-- <div>{{ convertScore(obj.vote_avarage) }}</div> -->
             <div>{{ obj.overview }}</div>
           </div>
           <div class="front">
@@ -88,7 +97,15 @@ export default {
     arrMovies: Array,
     arrTv: Array,
   },
-
+  methods: {
+    convertScore(score) {
+      const maxScore = 5;
+      const originalMaxScore = 10;
+      return {
+        score: Math.round((score * maxScore) / (originalMaxScore)),
+      };
+    },
+  },
 };
 </script>
 
