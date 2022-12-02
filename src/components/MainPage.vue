@@ -23,15 +23,20 @@
                 :iso="obj.original_language"
               />
             </div>
-            <ul>
-              <li>
-                <font-awesome-icon
-                  v-for="item in convertScore(obj.vote_average)"
-                  :key="item"
-                  icon="fa-solid fa-star"
-                />
-              </li>
-            </ul>
+            <div>
+              <font-awesome-icon
+                v-for="item in convertScore(obj.vote_average)"
+                :key="item"
+                icon="fa-solid fa-star"
+                :style="{color:'gold'}"
+              />
+              <font-awesome-icon
+                v-for="item in (maxScore - convertScore(obj.vote_average))"
+                :key="item"
+                icon="fa-regular fa-star"
+                :style="{color:'gold'}"
+              />
+            </div>
             <div>{{ obj.overview }}</div>
           </div>
           <div class="front">
@@ -39,8 +44,8 @@
               :src="`https://image.tmdb.org/t/p/w500${obj.poster_path}`"
               alt=""
             >
+            <div>{{ obj.title }}</div>
           </div>
-          <div>{{ obj.title }}</div>
         </div>
       </div>
       <h1
@@ -68,20 +73,20 @@
               />
             </div>
 
-            <ul>
-              <li>
-                <font-awesome-icon
-                  v-for="item in convertScore(obj.vote_average)"
-                  :key="item"
-                  icon="fa-solid fa-star"
-                />
-                <font-awesome-icon
-                  v-for="item in (maxScore - convertScore(obj.vote_average))"
-                  :key="item"
-                  icon="fa-regular fa-star"
-                />
-              </li>
-            </ul>
+            <div>
+              <font-awesome-icon
+                v-for="item in convertScore(obj.vote_average)"
+                :key="item"
+                icon="fa-solid fa-star"
+                :style="{color:'gold'}"
+              />
+              <font-awesome-icon
+                v-for="item in (maxScore - convertScore(obj.vote_average))"
+                :key="item"
+                icon="fa-regular fa-star"
+                :style="{color:'gold'}"
+              />
+            </div>
 
             <div>{{ obj.overview }}</div>
           </div>
@@ -90,8 +95,8 @@
               :src="`https://image.tmdb.org/t/p/w342${obj.poster_path}`"
               alt=""
             >
+            <div>{{ obj.name }}</div>
           </div>
-          <div>{{ obj.name }}</div>
         </div>
       </div>
     </div>
@@ -109,16 +114,17 @@ export default {
     arrMovies: Array,
     arrTv: Array,
   },
+
   data() {
     return {
-      scoreArr: [],
+      maxScore: 5,
     };
   },
+
   methods: {
     convertScore(score) {
-      const maxScore = 5;
       const originalMaxScore = 10;
-      return Math.round((score * maxScore) / (originalMaxScore));
+      return Math.round((score * this.maxScore) / (originalMaxScore));
     },
   },
 };
